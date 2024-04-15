@@ -2,7 +2,7 @@ import bcryptjs from "bcryptjs";
 import { ValidateUser } from "../Validator/signup.Validator.js";
 import User from "../models/user.model.js";
 
-export const signup = async (req, res) => {
+export const signup = async (req, res, next) => {
     console.log(req.body)
 
     const { error, value } = ValidateUser(req.body)
@@ -18,7 +18,6 @@ export const signup = async (req, res) => {
         const newUser = await User.create({ userName: userName, email: email, password: hashedPassword })
         res.status(201).send({ "User creted": newUser })
     } catch (error) {
-        console.log(error);
-        res.status(500).json(error.message)
+        next(error)
     }
 }

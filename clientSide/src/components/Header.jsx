@@ -20,7 +20,8 @@ const Header = () => {
                 <ul className="flex gap-4">
                     <Link to='/home'> <li className="hidden sm:inline hover:underline">Home</li> </Link>
                     <Link to='/about'><li className="hidden sm:inline hover:underline">About</li></Link>
-                    <Link to='/sign-in'> <li className="sm:inline hover:underline">SignIn</li> </Link>
+                    <Link to='/sign-in'> <li className="sm:inline hover:underline">Sign In</li> </Link>
+                    <Link to='/sign-up'> <li className="sm:inline hover:underline">Sign Up</li> </Link>
                 </ul>
             </div>
         </header>
