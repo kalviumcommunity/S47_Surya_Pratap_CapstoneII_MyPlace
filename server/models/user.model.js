@@ -1,5 +1,3 @@
-import { required } from "forms/lib/validators";
-import { type } from "is";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
@@ -22,6 +20,6 @@ const userSchema = new mongoose.Schema({
     timestamps:true
 })
 
-const User = mongoose.model('Users',userSchema)
+const User = mongoose.model('users',userSchema)
 
 export default User
