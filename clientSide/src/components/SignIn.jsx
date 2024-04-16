@@ -1,12 +1,15 @@
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import axios from "axios"
+import { useDispatch, useSelector } from "react-redux";
+import { signInStart, signInFaliure, signInSuccess } from "../redux/user/userSlice";
+
 
 
 const SignIn = () => {
   const [formData, setFormData] = useState({});
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { loading, error } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     setFormData({
@@ -17,22 +20,22 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();  
-    setLoading(true);
+    dispatch(signInStart())
     try {
       const res = await axios.post('http://localhost:300/api/auth/signin', formData);
       console.log(res.data);
+      console.log(res.data.userData);
+      const userData = await res.data.userData
       localStorage.setItem("accesstoken", res.data.token)
-      setLoading(false);
-      setError("");
+      dispatch(signInSuccess(userData))
     } catch (error) {
       console.log(error.response.data);
       console.error("error message", error.response.data.error);
-      setLoading(false);
       if (error.response && error.response.data && Array.isArray(error.response.data.error)) {
         const errorMessages = error.response.data.error.map(err => err.message).join(", ");
-        setError(errorMessages);
+        dispatch(signInFaliure(errorMessages))
       } else {
-        setError(error.response.data);
+        dispatch(signInFaliure(error.response.data))
       }
     }
   };
