@@ -11,9 +11,6 @@ function App() {
   return (
     <>
     <Header/>
-      <h1 className="text-red-500">
-        Hello world!
-      </h1>
       <Routes>
         <Route path="/home" element={<Home/>} ></Route>
         <Route path="/sign-in" element={<SignIn/>} ></Route>

@@ -29,6 +29,7 @@ export const signup = async (req, res, next) => {
 export const signin = async (req, res) => {
 
     const { email, password } = req.body
+    console.log(req.body);
 
     try {
 
@@ -38,15 +39,12 @@ export const signin = async (req, res) => {
         }
 
         const userData = validUser
-        console.log("userfound", userData);
         const passwordMatches = await bcryptjs.compare(password, userData.password)
-        console.log("boolean", passwordMatches);
         if (passwordMatches) {
-            const token = jwt.sign({id: userData._id}, process.env.SECRET_KEY)
-            console.log(token);
-            res.cookie('access_token', token, {httpOnly: true}).status(200).send("welcome")
+            const token = jwt.sign({ id: userData._id }, process.env.SECRET_KEY)
+            res.status(200).send({ token })
         } else {
-            res.status(500).send("Server Error")
+            res.status(500).send("Invalid Credentials")
         }
 
     } catch (error) {
