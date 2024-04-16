@@ -14,7 +14,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-    }
+    },
+    avatar: {
+        type: String,
+        default: "https://webstockreview.net/images/profile-icon-png-9.png"
+    },
 },
 {
     timestamps:true

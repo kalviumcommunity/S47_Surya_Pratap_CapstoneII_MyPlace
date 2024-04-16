@@ -3,7 +3,7 @@ import { useState } from "react"
 import axios from "axios"
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInFaliure, signInSuccess } from "../redux/user/userSlice";
-
+import OAuth from "./OAuth";
 
 
 const SignIn = () => {
@@ -19,7 +19,7 @@ const SignIn = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();  
+    e.preventDefault();
     dispatch(signInStart())
     try {
       const res = await axios.post('http://localhost:300/api/auth/signin', formData);
@@ -39,7 +39,7 @@ const SignIn = () => {
       }
     }
   };
-  
+
 
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -50,6 +50,7 @@ const SignIn = () => {
         <button disabled={loading} className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:-80">
           {loading ? 'Loading...' : 'Sign Up'}
         </button>
+        <OAuth/>
       </form>
       <div className="flex gap-2 mt-5">
         <p>Dont have an account?</p>

@@ -5,6 +5,7 @@ import SignUp from "./components/SignUp"
 import About from "./components/About"
 import Profile from "./components/Profile"
 import Header from "./components/Header"
+import OAuth from "./components/OAuth"
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/sign-up" element={<SignUp/>} ></Route>
         <Route path="/about" element={<About/>} ></Route>
         <Route path="/profile" element={<Profile/>} ></Route>
+        <Route path="/oauth" element={<OAuth/>} ></Route>
       </Routes>
     </>
   )
