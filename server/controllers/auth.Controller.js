@@ -42,7 +42,7 @@ export const signin = async (req, res) => {
         const passwordMatches = await bcryptjs.compare(password, userData.password)
         if (passwordMatches) {
             const token = jwt.sign({ id: userData._id }, process.env.SECRET_KEY)
-            res.status(200).send({ token })
+            res.status(200).send({ token, userData })
         } else {
             res.status(500).send("Invalid Credentials")
         }
