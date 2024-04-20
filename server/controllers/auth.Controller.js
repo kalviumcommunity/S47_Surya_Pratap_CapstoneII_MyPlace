@@ -54,8 +54,8 @@ export const signin = async (req, res) => {
 
 export const google = async (req, res) => {
     try {
+        console.log("google user info", req.body.image);
         const user = await User.findOne({ email: req.body.email })
-        console.log("route visited");
         if (user) {
             const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY)
             const { password: pass, ...rest } = user._doc
@@ -71,9 +71,9 @@ export const google = async (req, res) => {
                     Math.random().toString(36).slice(-4),
                 email: req.body.email,
                 password: hashedPassword,
-                avatar: req.body.photo,
+                avatar: req.body.image,
             });
-            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+            const token = jwt.sign({ id: newUser._id }, process.env.SECRET_KEY);
             const { password: pass, ...rest } = newUser._doc;
             res
                 .status(200)

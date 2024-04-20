@@ -6,19 +6,22 @@ import About from "./components/About"
 import Profile from "./components/Profile"
 import Header from "./components/Header"
 import OAuth from "./components/OAuth"
+import PrivateRoute from "./components/PrivateRoute"
 
 function App() {
 
   return (
     <>
-    <Header/>
+      <Header />
       <Routes>
-        <Route path="/home" element={<Home/>} ></Route>
-        <Route path="/sign-in" element={<SignIn/>} ></Route>
-        <Route path="/sign-up" element={<SignUp/>} ></Route>
-        <Route path="/about" element={<About/>} ></Route>
-        <Route path="/profile" element={<Profile/>} ></Route>
-        <Route path="/oauth" element={<OAuth/>} ></Route>
+        <Route path="/home" element={<Home />} ></Route>
+        <Route path="/sign-in" element={<SignIn />} ></Route>
+        <Route path="/sign-up" element={<SignUp />} ></Route>
+        <Route path="/about" element={<About />} ></Route>
+        <Route element={<PrivateRoute />} >
+          <Route path="/profile" element={<Profile />} ></Route>
+        </Route>
+        <Route path="/oauth" element={<OAuth />} ></Route>
       </Routes>
     </>
   )
