@@ -8,7 +8,6 @@ const Header = () => {
     const { currentUser } = useSelector(state => state.user)
     return (
         <header className="bg-slate-200 shadow-md">
-            {console.log(currentUser)}
             <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
                 <Link to='/'>
                     <div className="flex items-center text-sm sm:text-xl flex-wrap">
@@ -34,7 +33,7 @@ const Header = () => {
                     </Link>
                 </ul>
             </div>
-        </header>
+            </header>
     )
 }
 
