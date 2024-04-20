@@ -12,7 +12,4 @@ export default defineConfig({
     }
   },
   plugins: [react()],
-  define:{
-    'import.meta.env.VITE_KEY': JSON.stringify(import.meta.env.VITE_KEY),
-  }
 })
