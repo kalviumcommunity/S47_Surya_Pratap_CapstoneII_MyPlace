@@ -16,19 +16,17 @@ const OAuth = () => {
 
       const provider = new GoogleAuthProvider()
       const auth = getAuth(app)
-      console.log("tgdfg");
       const result = await signInWithPopup(auth, provider)
-      console.log(`${import.meta.env.VITE_BACKEND_URI}`);
       const res = await axios.post('http://localhost:300/api/auth/google', {
         name: result.user.displayName, email: result.user.email, image: result.user.photoURL
       })
       const data = await res
+      console.log(data);
+      sessionStorage.setItem("access_token", data.data.token)
       dispatch(signInSuccess(data))
       navigate('/home')
-      console.log("navigating");
-      console.log(data);
     } catch (error) {
-      console.log("can't sign in with google", error);
+      alert(error)
     }
   }
 
