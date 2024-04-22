@@ -12,6 +12,12 @@ import {
   updateUserStart,
   updateUserFailure,
   updateUserSuccess,
+  deleteUserFaliure,
+  deleteUserStart,
+  deleteUserSuccess,
+  userSignoutFailure,
+  userSignoutSuccess,
+  userSignoutStart
 } from "../redux/user/userSlice.js";
 
 const Profile = () => {
@@ -81,6 +87,44 @@ const Profile = () => {
       dispatch(updateUserFailure(error.message));
     }
   };
+
+  const handelUserDelete = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(deleteUserStart());
+      await axios
+        .delete(
+          `http://localhost:300/api/user/delete/${currentUser.data.rest._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          dispatch(deleteUserSuccess(res));
+          sessionStorage.clear();
+        })
+        .catch((err) => {
+          dispatch(deleteUserFaliure(err.message));
+        });
+    } catch (error) {
+      dispatch(deleteUserFaliure(error.message));
+    }
+  };
+
+  const handelSignOut = (e) => {
+    e.preventDefault()
+    try {
+      dispatch(userSignoutStart())
+      sessionStorage.clear()
+      dispatch(userSignoutSuccess("User Deleted"))
+    } catch (error) {
+      dispatch(userSignoutFailure(error))
+      
+    }
+  }
 
   return (
     <div className="w-66.66 p-4 mx-auto bg-white shadow-lg rounded-lg">
@@ -173,8 +217,13 @@ const Profile = () => {
           {updateSuccess && updateSuccess}{" "}
         </span>
         <div className="flex justify-between mt-5">
-          <span className="text-red-700 cursor-pointer">Delete Account</span>
-          <span className="text-red-700 cursor-pointer">Sign out</span>
+          <span
+            className="text-red-700 cursor-pointer"
+            onClick={handelUserDelete}
+          >
+            Delete Account
+          </span>
+          <span className="text-red-700 cursor-pointer" onClick={handelSignOut}>Sign out</span>
         </div>
         <p className="text-red-700 mt-5">{err ? err : ""}</p>
       </div>
