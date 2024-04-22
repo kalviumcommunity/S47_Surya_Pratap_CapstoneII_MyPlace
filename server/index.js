@@ -1,7 +1,7 @@
 import expres from "express"
 import mongoose from "mongoose";
 import dotenv from "dotenv"
-import userRoutes from "./routes/UserRoutes.js"
+import userRoutes from "./routes/User.Routes.js"
 import authRouter from "./routes/Auth.Routes.js"
 import cors from "cors"
 
