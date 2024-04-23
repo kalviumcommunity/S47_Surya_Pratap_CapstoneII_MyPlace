@@ -17,8 +17,9 @@ import {
   deleteUserSuccess,
   userSignoutFailure,
   userSignoutSuccess,
-  userSignoutStart
+  userSignoutStart,
 } from "../redux/user/userSlice.js";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { currentUser, loading, err } = useSelector((state) => state.user);
@@ -115,16 +116,15 @@ const Profile = () => {
   };
 
   const handelSignOut = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      dispatch(userSignoutStart())
-      sessionStorage.clear()
-      dispatch(userSignoutSuccess("User Deleted"))
+      dispatch(userSignoutStart());
+      sessionStorage.clear();
+      dispatch(userSignoutSuccess("User Deleted"));
     } catch (error) {
-      dispatch(userSignoutFailure(error))
-      
+      dispatch(userSignoutFailure(error));
     }
-  }
+  };
 
   return (
     <div className="w-66.66 p-4 mx-auto bg-white shadow-lg rounded-lg">
@@ -211,6 +211,13 @@ const Profile = () => {
           >
             {loading ? "Loading..." : "Update Profile"}
           </button>
+          <Link
+            to="/create-listing"
+            className="w-full bg-green-700 text-white p-3 rounded-lg uppercase 
+            hover:opacity-95 disabled:opacity-80 flex items-center justify-center mt-2"
+          >
+            Create listing
+          </Link>
         </form>
         <span className="text-green-700">
           {" "}
@@ -223,7 +230,9 @@ const Profile = () => {
           >
             Delete Account
           </span>
-          <span className="text-red-700 cursor-pointer" onClick={handelSignOut}>Sign out</span>
+          <span className="text-red-700 cursor-pointer" onClick={handelSignOut}>
+            Sign out
+          </span>
         </div>
         <p className="text-red-700 mt-5">{err ? err : ""}</p>
       </div>
