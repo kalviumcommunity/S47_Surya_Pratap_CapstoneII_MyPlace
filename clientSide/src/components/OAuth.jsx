@@ -21,7 +21,6 @@ const OAuth = () => {
         name: result.user.displayName, email: result.user.email, image: result.user.photoURL
       })
       const data = await res
-      console.log(data);
       sessionStorage.setItem("access_token", data.data.token)
       dispatch(signInSuccess(data))
       navigate('/home')
