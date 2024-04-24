@@ -1,4 +1,3 @@
-import { log } from "console";
 import Listing from "../models/Listing.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import { ListingValidate } from "../Validator/listing.Validator.js";
@@ -44,5 +43,15 @@ export const createListing = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const deleteListing = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedListing = await Listing.findByIdAndDelete(id);
+    res.status(201).json({ message: "Lising Deleted Successfully" });
+  } catch (error) {
+    res.send(error.message);
   }
 };
