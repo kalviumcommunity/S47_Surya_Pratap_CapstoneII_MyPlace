@@ -30,6 +30,11 @@ const Profile = () => {
   const [filePercentage, setFilePercentage] = useState(0);
   const dispatch = useDispatch();
   const [updateSuccess, setUpdateSuccess] = useState("");
+  const [showListingsError, setShowListingError] = useState("");
+  const [showlistings, setShowListings] = useState([]);
+  const [toggleShowListingButton, setToggleShowListingButton] = useState(false);
+  const [showCloseButton, setShowCloseButton] = useState(false);
+
   useEffect(() => {
     if (file) {
       handelFileUpload(file);
@@ -124,6 +129,39 @@ const Profile = () => {
     } catch (error) {
       dispatch(userSignoutFailure(error));
     }
+  };
+
+  const handelShowListing = async (e) => {
+    e.preventDefault();
+    try {
+      setShowListingError("");
+      setShowCloseButton(true);
+      await axios
+        .get(
+          `http://localhost:300/api/user/listings/${currentUser.data.rest._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          console.log(res);
+          setShowListings(res.data);
+          setToggleShowListingButton(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error.message);
+      setShowListingError(error.message);
+    }
+  };
+
+  const handelCloseListings = () => {
+    setShowCloseButton(false);
+    setShowListings([]);
   };
 
   return (
@@ -236,6 +274,59 @@ const Profile = () => {
         </div>
         <p className="text-red-700 mt-5">{err ? err : ""}</p>
       </div>
+      <div className="flex">
+      <button
+        onClick={handelShowListing}
+        className="text-green-700 w-full disabled:placeholder-opacity-85"
+      >
+        {" "}
+        Show My Listings{" "}
+      </button>
+      {showCloseButton && (
+        <button onClick={handelCloseListings} className="text-red-700 w-full">
+          Close My Listings
+        </button>
+      )}
+      </div>
+      <p className="text-red-700 mt-5">
+        {showListingsError && showListingsError}
+      </p>
+
+      {showlistings && showlistings.length > 0 && (
+        <div className="flex flex-col gap-4">
+          <h1 className="text-center mt-7 text-2xl font-semibold">
+            Places Listed By You
+          </h1>
+          {showlistings.map((item) => (
+            <div
+              key={item._id}
+              className="w-full border rounded-lg p-3 flex justify-between items-center gap-4"
+            >
+              <Link to={`/listing/${item._id}`}>
+                <img
+                  src={item.images[0]}
+                  alt="listing Cover"
+                  className="h-16 w-16 object-contain"
+                />
+              </Link>
+              <Link
+                to={`/listing/${item._id}`}
+                className="text-slate-700 font-semibold flex-1 hover:underline truncate"
+              >
+                <p>{item.name}</p>
+              </Link>
+              <div className="flex flex-col gap-1">
+                <button className="text-red-700 uppercase border p-1 rounded-lg">
+                  Delete
+                </button>
+                <button className="text-blue-700 uppercase border p-1 rounded-lg">
+                  Edit
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
