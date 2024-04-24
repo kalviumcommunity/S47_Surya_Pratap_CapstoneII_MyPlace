@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CreateListing = () => {
   const [imagefiles, setImagefiles] = useState([]);
@@ -14,31 +15,40 @@ const CreateListing = () => {
   const [furnished, setFurnished] = useState(false);
   const [onOffer, setOnOffer] = useState(false);
   const [acRooms, setACRooms] = useState(false);
-  const [messAvailable, setMessAvailable] = useState(false);
+  const [messFacility, setmessFacility] = useState(false);
   const [freeWifi, setFreeWifi] = useState(false);
   const [bedrooms, setBedRooms] = useState(0);
   const [bathrooms, setBathrooms] = useState(0);
   const [regularPrice, setregularPrice] = useState(0);
   const [discountPrice, setDiscountPrice] = useState(0);
   const { currentUser } = useSelector((state) => state.user);
-  const handleSubmit = (e) => {
+  const [validationErrors, setValidationErrors] = useState([]);
+  const [uploadSuccessMessage, setUploadSuccessMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [disableButton, setDisablebutton] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+    let typeValue = rent ? "rent" : sale ? "sale" : "";
     let formData = new FormData();
     formData.append("name", name);
     formData.append("address", address);
     formData.append("description", description);
-    formData.append("sale", sale);
-    formData.append("type", rent);
+    formData.append("type", typeValue);
     formData.append("parking", parkingSpot);
     formData.append("furnished", furnished);
     formData.append("offer", onOffer);
     formData.append("ACrooms", acRooms);
-    formData.append("messAvailable", messAvailable);
+    formData.append("messFacility", messFacility);
     formData.append("wifiAvailable", freeWifi);
     formData.append("bedrooms", bedrooms);
     formData.append("bathrooms", bathrooms);
     formData.append("regularPrice", regularPrice);
-    formData.append("discountPrice", discountPrice);
+    if (discountPrice) {
+      formData.append("discountPrice", discountPrice);
+    }
     formData.append("userRef", currentUser.data.rest._id);
     for (let i = 0; i < imagefiles.length; i++) {
       if (imagefiles.length > 6) {
@@ -53,34 +63,31 @@ const CreateListing = () => {
       formData.append("videos", videos[i]);
     }
     console.log(formData); // For testing
-    axios
+    await axios
       .post(`http://localhost:300/api/listing/create`, formData, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
         },
       })
       .then((res) => {
+        setIsLoading(false);
+        setDisablebutton(true);
         console.log(res);
-        setName("");
-        setAddress("");
-        setDescription("");
-        setSale(false);
-        setRent(false);
-        setParkingSpot(false);
-        setFurnished(false);
-        setOnOffer(false);
-        setACRooms(false);
-        setMessAvailable(false);
-        setFreeWifi(false);
-        setBedRooms(0);
-        setBathrooms(0);
-        setregularPrice(0);
-        setDiscountPrice(0);
-        setImagefiles([]);
-        setVideos([]);
+        setValidationErrors("");
+        setUploadSuccessMessage(res.data.message);
+        setTimeout(() => {
+          navigate(`/listing/${currentUser.data.rest._id}`);
+        }, 1500);
       })
       .catch((err) => {
+        setIsLoading(false);
         console.log(err);
+        console.log(err.response.data.error);
+        if (err.response.data.error) {
+          setValidationErrors(
+            err.response.data.error.map((err) => err.message)
+          );
+        }
       });
   };
 
@@ -91,7 +98,7 @@ const CreateListing = () => {
         Create a Listing
       </h1>
       <form
-        className="flex flex-col sm:flex-row gap-4 mt-4"
+        className="flex flex-col sm:flex-row gap-8 mt-4"
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col gap-4 flex-1">
@@ -187,8 +194,8 @@ const CreateListing = () => {
                 type="checkbox"
                 id="messFacility"
                 className="w-5"
-                checked={messAvailable}
-                onChange={(e) => setMessAvailable(e.target.checked)}
+                checked={messFacility}
+                onChange={(e) => setmessFacility(e.target.checked)}
               />
               <span className="mt-1">Mess Available</span>
             </div>
@@ -231,7 +238,6 @@ const CreateListing = () => {
               <input
                 type="number"
                 id="regularPrice"
-                min="10"
                 required
                 className="p-3 border border-gray-300 rounded-lg w-20"
                 onChange={(e) => setregularPrice(e.target.value)}
@@ -241,28 +247,31 @@ const CreateListing = () => {
                 <span className="text-xs">{`💲/ month`}</span>
               </div>
             </div>
-            <div className="flex gap-2 items-center">
-              <input
-                type="number"
-                id="discountPrice"
-                min="1"
-                max="10"
-                required
-                className="p-3 border border-gray-300 rounded-lg w-20"
-                onChange={(e) => setDiscountPrice(e.target.value)}
-              />
-              <div className="flex flex-col items-center">
-                <p>Discout Price</p>
-                <span className="text-xs">{`💲/ month`}</span>
+            {onOffer ? (
+              <div className="flex gap-2 items-center">
+                <input
+                  type="number"
+                  id="discountPrice"
+                  required
+                  className="p-3 border border-gray-300 rounded-lg w-20"
+                  onChange={(e) => setDiscountPrice(e.target.value)}
+                />
+                <div className="flex flex-col items-center">
+                  <p>Discout Price</p>
+                  <span className="text-xs">{`💲/ month`}</span>
+                </div>
               </div>
-            </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
         <div className="flex flex-col flex-1 gap-4">
-          <p className="font-semibold">
+          <p className="font-semibold flex items-center">
             Images
-            <span className="font-normal text-gray-600 ml-2">
-              The first Image will be the cover (max 6)
+            <span className="font-normal text-gray-600 ml-2 flex">
+              The first Image will be the cover <br />
+              Upload size should be less than 10mb (max 6)
             </span>
           </p>
           <div className="flex gap-4">
@@ -274,12 +283,6 @@ const CreateListing = () => {
               className="p-3 border border-gray-300 rounded w-full"
               onChange={(e) => setImagefiles(e.target.files)}
             />
-            <button
-              type="button"
-              className="p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
-            >
-              UPLOAD
-            </button>
           </div>
           <p className="font-semibold">
             Videos
@@ -296,16 +299,34 @@ const CreateListing = () => {
               className="p-3 border border-gray-300 rounded w-full"
               onChange={(e) => setVideos(e.target.files)}
             />
-            <button
-              type="button"
-              className="p-3 text-green-700 border border-green-700 rounded uppercase hover:shadow-lg disabled:opacity-80"
-            >
-              UPLOAD
-            </button>
           </div>
-          <button className="uppercase text-white bg-slate-700 p-3 rounded-lg hover:opacity-95 disabled:opacity-80">
-            Create Listing
+          <button
+            className="uppercase text-white bg-slate-700 p-3 rounded-lg hover:opacity-95 disabled:opacity-80"
+            disabled={disableButton ? true : false}
+          >
+            {isLoading ? "Creating..." : "Create Listing"}
           </button>
+          {validationErrors.length > 0 && (
+            <div
+              className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+              role="alert"
+            >
+              <strong className="font-bold">Validation Errors:</strong>
+              <ul>
+                {validationErrors.map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {uploadSuccessMessage && (
+            <div
+              className="bg-green-100 border-red-400 text-green-600 px-4 py-3 rounded-lg relative text-center"
+              role="success"
+            >
+              <strong className="font-bold"> {uploadSuccessMessage} </strong>
+            </div>
+          )}
         </div>
       </form>
     </main>

@@ -1,8 +1,15 @@
+import { log } from "console";
 import Listing from "../models/Listing.model.js";
 import cloudinary from "../utils/cloudinary.js";
+import { ListingValidate } from "../Validator/listing.Validator.js";
 import fs from "fs";
 
 export const createListing = async (req, res) => {
+  console.log(req.files);
+  const { error, value } = ListingValidate(req.body);
+  if (error) {
+    return res.status(500).json({ error: error.details });
+  }
   try {
     let videosPaths = [];
     if (
@@ -11,9 +18,9 @@ export const createListing = async (req, res) => {
       Array.isArray(req.files.videos) &&
       req.files.videos.length > 0
     ) {
-        for (let video of req.files.videos) {
-            videosPaths.push('/' + video.path);
-        }
+      for (let video of req.files.videos) {
+        videosPaths.push("/" + video.path);
+      }
     }
 
     if (req.files["images"]) {
@@ -31,9 +38,11 @@ export const createListing = async (req, res) => {
 
     const createdListing = await Listing.create(listingData);
     console.log("Created a dateabase entry", createdListing);
-    return res.status(201).json(createdListing);
+    return res
+      .status(201)
+      .json({ message: "Listing Created Successfully!!", createdListing });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: error.message });
   }
 };
