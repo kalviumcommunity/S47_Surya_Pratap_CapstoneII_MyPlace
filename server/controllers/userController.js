@@ -46,7 +46,7 @@ export const deleteUser = async (req, res) => {
   if (req.user.id !== id) {
     return res
       .status(500)
-      .res.send({ message: "You can only delete your own account" });
+      .send({ message: "You can only delete your own account" });
   }
   try {
     await User.findByIdAndDelete({ _id: id });
@@ -59,7 +59,7 @@ export const getUserListings = async (req, res) => {
   if (req.user.id !== id) {
     return res
       .status(500)
-      .res.send({ message: "You can only view your own listing" });
+      .send({ message: "You can only view your own listing" });
   }
   try {
     const AllListings = await Listing.find({ userRef: id });

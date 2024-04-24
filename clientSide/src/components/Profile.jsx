@@ -39,7 +39,7 @@ const Profile = () => {
     if (file) {
       handelFileUpload(file);
     }
-  }, [file]);
+  }, [file,setShowListings]);
 
   const handelFileUpload = (file) => {
     const storage = getStorage(app);
@@ -164,6 +164,26 @@ const Profile = () => {
     setShowListings([]);
   };
 
+  const handelListingDelete = async (id,e) => {
+    e.preventDefault()
+    try {
+      await axios
+        .delete(`http://localhost:300/api/listing/deleteListing/${id}`, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res);
+          setShowListings((prev) => {
+            prev.filter((listing) => listing._id !== id);
+          });
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="w-66.66 p-4 mx-auto bg-white shadow-lg rounded-lg">
       <h1 className="text-3xl font-bold mb-4 my-7 text-center">Profile</h1>
@@ -275,18 +295,18 @@ const Profile = () => {
         <p className="text-red-700 mt-5">{err ? err : ""}</p>
       </div>
       <div className="flex">
-      <button
-        onClick={handelShowListing}
-        className="text-green-700 w-full disabled:placeholder-opacity-85"
-      >
-        {" "}
-        Show My Listings{" "}
-      </button>
-      {showCloseButton && (
-        <button onClick={handelCloseListings} className="text-red-700 w-full">
-          Close My Listings
+        <button
+          onClick={handelShowListing}
+          className="text-green-700 w-full disabled:placeholder-opacity-85"
+        >
+          {" "}
+          Show My Listings{" "}
         </button>
-      )}
+        {showCloseButton && (
+          <button onClick={handelCloseListings} className="text-red-700 w-full">
+            Close My Listings
+          </button>
+        )}
       </div>
       <p className="text-red-700 mt-5">
         {showListingsError && showListingsError}
@@ -316,7 +336,10 @@ const Profile = () => {
                 <p>{item.name}</p>
               </Link>
               <div className="flex flex-col gap-1">
-                <button className="text-red-700 uppercase border p-1 rounded-lg">
+                <button
+                  className="text-red-700 uppercase border p-1 rounded-lg"
+                  onClick={(e) => handelListingDelete(item._id,e)}
+                >
                   Delete
                 </button>
                 <button className="text-blue-700 uppercase border p-1 rounded-lg">
