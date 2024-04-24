@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"
 import axios from "axios"
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ const SignIn = () => {
   const [formData, setFormData] = useState({});
   const { loading, error } = useSelector((state) => state.user)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setFormData({
@@ -28,6 +29,8 @@ const SignIn = () => {
       const userData = await res.data.userData
       localStorage.setItem("accesstoken", res.data.token)
       dispatch(signInSuccess(userData))
+      navigate('/profile')
+
     } catch (error) {
       console.log(error.response.data);
       console.error("error message", error.response.data.error);
