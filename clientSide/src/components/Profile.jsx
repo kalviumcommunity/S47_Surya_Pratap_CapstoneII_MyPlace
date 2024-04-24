@@ -174,7 +174,6 @@ const Profile = () => {
           },
         })
         .then((res) => {
-          console.log(res);
           setShowListings((prev) => {
             prev.filter((listing) => listing._id !== id);
           });
