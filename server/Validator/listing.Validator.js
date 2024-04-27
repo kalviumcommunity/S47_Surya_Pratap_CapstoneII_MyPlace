@@ -3,7 +3,7 @@ const validation = (schema) => (payload) =>
   schema.validate(payload, { abortEarly: false });
 
 const listingValidation = Joi.object({
-  name: Joi.string().max(10).required(),
+  name: Joi.string().min(5).required(),
   description: Joi.string().required(),
   address: Joi.string().max(225).required(),
   regularPrice: Joi.number().min(20).required(),

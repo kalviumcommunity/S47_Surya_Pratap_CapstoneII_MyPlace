@@ -39,7 +39,7 @@ const Profile = () => {
     if (file) {
       handelFileUpload(file);
     }
-  }, [file,setShowListings]);
+  }, [file, setShowListings]);
 
   const handelFileUpload = (file) => {
     const storage = getStorage(app);
@@ -57,6 +57,7 @@ const Profile = () => {
 
       (error) => {
         setfileUploadError(true);
+        console.log(error);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
@@ -164,8 +165,8 @@ const Profile = () => {
     setShowListings([]);
   };
 
-  const handelListingDelete = async (id,e) => {
-    e.preventDefault()
+  const handelListingDelete = async (id, e) => {
+    e.preventDefault();
     try {
       await axios
         .delete(`http://localhost:300/api/listing/deleteListing/${id}`, {
@@ -174,6 +175,7 @@ const Profile = () => {
           },
         })
         .then((res) => {
+          console.log(res);
           setShowListings((prev) => {
             prev.filter((listing) => listing._id !== id);
           });
@@ -334,16 +336,16 @@ const Profile = () => {
               >
                 <p>{item.name}</p>
               </Link>
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col items-center gap-1">
                 <button
-                  className="text-red-700 uppercase border p-1 rounded-lg"
-                  onClick={(e) => handelListingDelete(item._id,e)}
+                  className="text-red-700 uppercase p-1 "
+                  onClick={(e) => handelListingDelete(item._id, e)}
                 >
                   Delete
                 </button>
-                <button className="text-blue-700 uppercase border p-1 rounded-lg">
-                  Edit
-                </button>
+                <Link to={`/update-listing-options/${item._id}`}>
+                  <button className="text-blue-700 uppercase p-1 ">Edit</button>
+                </Link>
               </div>
             </div>
           ))}
