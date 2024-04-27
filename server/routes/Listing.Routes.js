@@ -2,6 +2,10 @@ import express from "express";
 import {
   createListing,
   deleteListing,
+  updateListingInfo,
+  getListingById,
+  updateListingImages,
+  updateListingVideos
 } from "../controllers/listing.controllers.js";
 import { verifyToken } from "../utils/verifyUser.js";
 import multer from "multer";
@@ -61,6 +65,24 @@ router.post(
   createListing
 );
 
+router.get("/getListingById/:id", getListingById);
+
 router.delete("/deleteListing/:id", verifyToken, deleteListing);
+
+router.put("/updateListing-info/:id", verifyToken, updateListingInfo);
+
+router.put(
+  "/updateListing-images/:id",
+  verifyToken,
+  upload.fields([{ name: "images", maxCount: 6 }]),
+  updateListingImages
+);
+
+router.put(
+  "/updateListing-videos/:id",
+  verifyToken,
+  upload.fields([{ name: "videos", maxCount: 2 }]),
+  updateListingVideos
+);
 
 export default router;
