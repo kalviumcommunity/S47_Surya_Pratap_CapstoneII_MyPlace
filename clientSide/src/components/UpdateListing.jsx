@@ -29,6 +29,7 @@ const UpdateListing = () => {
   const [errMessage, setErrorMessages] = useState("");
 
   useEffect(() => {
+    console.log("current listing id", id);
     axios
       .get(`http://localhost:300/api/listing/getListingById/${id}`)
       .then((res) => {
@@ -53,7 +54,7 @@ const UpdateListing = () => {
       .catch((err) => {
         console.log(err.message);
       });
-  }, []);
+  }, [id, currentUser, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,6 +82,7 @@ const UpdateListing = () => {
           bedrooms,
           regularPrice,
           discountPrice,
+          bathrooms,
           userRef,
         },
         {
@@ -94,9 +96,9 @@ const UpdateListing = () => {
         setDisablebutton(true);
         console.log(res.data);
         setUploadSuccessMessage(res.data.message);
-        // setTimeout(() => {
-        //   navigate(`/listing/${currentUser.data.rest._id}`);
-        // }, 1500);
+        setTimeout(() => {
+          navigate(`/listing/${id}`);
+        }, 1500);
       })
       .catch((err) => {
         setUploadSuccessMessage("");

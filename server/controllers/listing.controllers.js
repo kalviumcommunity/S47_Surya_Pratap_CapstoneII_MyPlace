@@ -83,8 +83,9 @@ export const updateListingInfo = async (req, res) => {
 
 export const getListingById = async (req, res) => {
   const { id } = req.params;
+  console.log(id);
   try {
-    const listing = await Listing.findById(id);
+    const listing = await Listing.findById({ _id: id });
     if (!listing) {
       return res.status(404).send("No Listing Found");
     }

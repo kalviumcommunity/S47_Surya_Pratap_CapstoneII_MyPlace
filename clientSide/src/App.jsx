@@ -12,6 +12,7 @@ import UpdateListing from "./components/UpdateListing";
 import EditListingRedirect from "./components/EditListingRedirect";
 import UpdateListingImages from "./components/UpdateListingImages";
 import UpdateListingVideos from "./components/UpdateListingVideos";
+import Listings from "./components/Listings";
 
 function App() {
   return (
@@ -26,12 +27,12 @@ function App() {
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/create-listing" element={<CreateListing />}></Route>
           <Route
-            path="/update-listing-information/:id"
-            element={<UpdateListing />}
+            path="/editListing/:id"
+            element={<EditListingRedirect />}
           ></Route>
           <Route
-            path="/update-listing-options/:id"
-            element={<EditListingRedirect />}
+            path="/update-listing-information/:id"
+            element={<UpdateListing />}
           ></Route>
           <Route
             path="/update-listing-images/:id"
@@ -43,6 +44,7 @@ function App() {
           ></Route>
         </Route>
         <Route path="/oauth" element={<OAuth />}></Route>
+        <Route path="/listing/:id" element={<Listings />}></Route>
       </Routes>
     </>
   );

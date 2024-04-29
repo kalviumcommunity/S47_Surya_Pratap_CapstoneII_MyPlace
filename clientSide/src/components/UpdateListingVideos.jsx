@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const UpdateListingVideos = () => {
   const { id } = useParams();
@@ -11,6 +11,7 @@ const UpdateListingVideos = () => {
     useState("");
   const [errMessage, setErrorMessages] = useState("");
   const [disabledButton, setDisablebutton] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -45,6 +46,9 @@ const UpdateListingVideos = () => {
           setVideosUpdateSuccessMessage("Videos Updated Successfully");
           setDisablebutton(true);
           setErrorMessages("");
+          setTimeout(() => {
+            navigate(`/listing/${id}`);
+          }, 1500);
         })
         .catch((err) => {
           setVideosUpdateSuccessMessage("");

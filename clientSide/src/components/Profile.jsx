@@ -147,7 +147,6 @@ const Profile = () => {
           }
         )
         .then((res) => {
-          console.log(res);
           setShowListings(res.data);
           setToggleShowListingButton(true);
         })
@@ -343,7 +342,7 @@ const Profile = () => {
                 >
                   Delete
                 </button>
-                <Link to={`/update-listing-options/${item._id}`}>
+                <Link to={`/editListing/${item._id}`}>
                   <button className="text-blue-700 uppercase p-1 ">Edit</button>
                 </Link>
               </div>

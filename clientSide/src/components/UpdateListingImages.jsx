@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function UpdateListingImages() {
   const { id } = useParams();
@@ -10,6 +10,7 @@ function UpdateListingImages() {
   const [disabledButton, setDisablebutton] = useState(false);
   const [updateSuccessMessage, setUpdateSuccessMessage] = useState("");
   const [errorMesssages, setErrorMessages] = useState("");
+  const navigate = useNavigate()
 
   useEffect(() => {
     axios
@@ -46,6 +47,9 @@ function UpdateListingImages() {
           setDisablebutton(false);
           setUpdateSuccessMessage("Image updated Succcessfully");
           setErrorMessages("");
+          setTimeout(() => {
+            navigate(`/listing/${id}`);
+          }, 1500);
         })
         .catch((err) => {
           setIsLoading(false);
@@ -78,7 +82,7 @@ function UpdateListingImages() {
         ))}
       </div>
 
-      <form onSubmit={handelsubmit}>
+      <form onSubmit={handelsubmit} className="mt-5 flex flex-col gap-4">
         <input
           type="file"
           multiple
@@ -90,7 +94,7 @@ function UpdateListingImages() {
           className="uppercase text-white bg-slate-700 p-3 rounded-lg hover:opacity-95 disabled:opacity-80"
           disabled={disabledButton ? true : false}
         >
-          {isLoading ? "Creating..." : "Create Listing"}
+          {isLoading ? "Update..." : "Update Images"}
         </button>
       </form>
       {updateSuccessMessage && (
