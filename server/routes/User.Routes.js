@@ -3,7 +3,8 @@ import {
   welcomeRoute,
   updateUser,
   deleteUser,
-  getUserListings
+  getUserListings,
+  getUser,
 } from "../controllers/userController.js";
 import { verifyToken } from "../utils/verifyUser.js";
 
@@ -13,6 +14,7 @@ router.get("/", welcomeRoute);
 
 router.post("/update/:id", verifyToken, updateUser);
 router.delete("/delete/:id", verifyToken, deleteUser);
-router.get("/listings/:id", verifyToken, getUserListings)
+router.get("/listings/:id", verifyToken, getUserListings);
+router.get("/getLandloard/:id", verifyToken, getUser);
 
 export default router;

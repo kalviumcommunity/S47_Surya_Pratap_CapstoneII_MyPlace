@@ -1,17 +1,17 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect } from "react";
-import axios from "axios";
+// import { useEffect } from "react";
+// import axios from "axios";
 
 function EditListingRedirect() {
   const { id } = useParams();
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:300/api/listing/getListingById/${id}`)
-      .then((res) => {
-        console.log(res);
-      });
-  }, [id]);
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:300/api/listing/getListingById/${id}`)
+  //     .then((res) => {
+  //       console.log(res);
+  //     });
+  // }, [id]);
 
   return (
     <>
