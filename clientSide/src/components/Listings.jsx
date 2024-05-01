@@ -19,6 +19,8 @@ import { TbAirConditioning } from "react-icons/tb";
 import { TbAirConditioningDisabled } from "react-icons/tb";
 import { FiWifi } from "react-icons/fi";
 import { FiWifiOff } from "react-icons/fi";
+import { useSelector } from "react-redux";
+import Contact from "./Contact";
 
 const Listings = () => {
   SwiperCore.use([Navigation]);
@@ -28,6 +30,8 @@ const Listings = () => {
   const [error, setError] = useState(false);
   const [showImages, setShowImages] = useState(false);
   const [showVideos, setShowVideos] = useState(true);
+  const { currentUser } = useSelector((state) => state.user);
+  const [contact, setContact] = useState(false);
 
   useEffect(() => {
     try {
@@ -35,7 +39,6 @@ const Listings = () => {
       axios
         .get(`http://localhost:300/api/listing/getListingById/${id}`)
         .then((res) => {
-          console.log(res);
           setListing(res.data);
           setLoading(false);
         })
@@ -114,7 +117,9 @@ const Listings = () => {
             </div>
           </div>
           <div className="flex flex-col justify-center items-start p-4">
-            <h2 className="text-2xl font-bold mb-2">{listing.name}</h2>
+            <div className="flex items-center text-2xl font-bold mb-2">
+              <h2>{listing.name}</h2> -<span>{listing.regularPrice}/Month</span>
+            </div>
             <p className="flex items-center gap-2 text-sm text-gray-600 mb-4">
               <FaMapMarkerAlt className="text-green-700" /> {listing.address}
             </p>
@@ -131,6 +136,17 @@ const Listings = () => {
                   ${listing.regularPrice - listing.discountPrice}
                 </p>
               )}
+              {currentUser &&
+                listing.userRef !== currentUser.data.rest._id &&
+                !contact && (
+                  <button
+                    className="bg-green-700 text-white  uppercase py-1 px-2 rounded-md hover:opacity-95"
+                    onClick={() => setContact(true)}
+                  >
+                    Contact Landlord/Warden
+                  </button>
+                )}
+              {contact && <Contact listing={listing} />}
             </div>
             <p className="text-gray-800 my-4">{listing.description}</p>
             <ul className="text-sm text-gray-900 grid grid-cols-2 gap-2">

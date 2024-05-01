@@ -1,6 +1,7 @@
 import bcryptjs from "bcryptjs";
 import User from "../models/user.model.js";
 import Listing from "../models/Listing.model.js";
+import { log } from "console";
 
 export const welcomeRoute = async (req, res) => {
   try {
@@ -63,7 +64,23 @@ export const getUserListings = async (req, res) => {
   }
   try {
     const AllListings = await Listing.find({ userRef: id });
-    res.status(200).json(AllListings)
+    res.status(200).json(AllListings);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const getUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findById(id);
+    if (!user) {
+      res.status(404).send("User Not Found");
+    }
+    const { password: pass, ...rest } = user._doc;
+
+    res.status(200).json(rest);
   } catch (error) {
     console.log(error.message);
   }
