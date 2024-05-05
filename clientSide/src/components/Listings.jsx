@@ -6,7 +6,6 @@ import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
 import { FaMapMarkerAlt } from "react-icons/fa";
-import EditListingRedirect from "./EditListingRedirect";
 import { FaBed } from "react-icons/fa";
 import { FaBath } from "react-icons/fa6";
 import { FaSquareParking } from "react-icons/fa6";
@@ -21,6 +20,7 @@ import { FiWifi } from "react-icons/fi";
 import { FiWifiOff } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import Contact from "./Contact";
+import { Link } from "react-router-dom";
 
 const Listings = () => {
   SwiperCore.use([Navigation]);
@@ -28,8 +28,8 @@ const Listings = () => {
   const [listing, setListing] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [showImages, setShowImages] = useState(false);
-  const [showVideos, setShowVideos] = useState(true);
+  const [showImages, setShowImages] = useState(true);
+  const [showVideos, setShowVideos] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const [contact, setContact] = useState(false);
 
@@ -63,7 +63,7 @@ const Listings = () => {
   };
 
   return (
-    <main className="container mx-auto p-4">
+    <main className="container mx-auto p-4 gap-3 relative">
       {loading && <p className="text-center my-7 text-2xl">Loading... </p>}
       {error && <p className="text-center my-7 text-2xl"> {error} </p>}
       {listing && !loading && !error && (
@@ -74,7 +74,10 @@ const Listings = () => {
                 {listing.images.map((url, index) => (
                   <SwiperSlide key={index}>
                     <img
-                      src={url}
+                      src={
+                        url ||
+                        "https://th.bing.com/th/id/R.220c3d532bfbbb479f817e41e0d11e4e?rik=FImtOPw4JZfjTQ&riu=http%3a%2f%2fhudsonheightsres.com%2fwp-content%2fuploads%2fsites%2f5%2f2020%2f02%2f20150730-174343-20150730-174359-scaled.jpg&ehk=RR01ft7Qr5XExuMaieCZ9HdFqn5QQmKrVEAZAZJJbn4%3d&risl=&pid=ImgRaw&r=0"
+                      }
                       alt=""
                       className="object-cover object-center max-w-full h-auto md:max-h-96 rounded-lg shadow-md"
                     />
@@ -83,33 +86,34 @@ const Listings = () => {
               </Swiper>
             ) : (
               <>
-                {listing.videos.map((videoURL, index) => (
-                  <video
-                    className="max-w-full h-auto rounded-lg shadow-md"
-                    controls
-                    key={index}
-                  >
-                    <source
-                      src={`http://localhost:300${videoURL.replace(
-                        /\\/g,
-                        "/"
-                      )}`}
-                      type="video/mp4"
-                    />
-                  </video>
-                ))}
+                <div className="flex flex-wrap gap-2 sm:flex-col">
+                  {listing.videos.map((videoURL, index) => (
+                    <video
+                      className="max-w-full h-full rounded-lg shadow-md sm:w-1/2 flex-col md:w-1/2 lg:w-1/2"
+                      controls
+                      key={index}
+                    >
+                      <source
+                        src={`http://localhost:300${videoURL.replace(
+                          /\\/g,
+                          "/"
+                        )}`}
+                        type="video/mp4"
+                      />
+                    </video>
+                  ))}
+                </div>
               </>
             )}
-
-            <div className="mt-3">
+            <div className="flex justify-center mt-6 my-6 absolute bottom-0 left-1/2">
               <button
-                className="text-green-700 uppercase p-1"
+                className="text-white bg-blue-500 hover:bg-blue-600 uppercase px-4 py-2 mr-2 rounded-md"
                 onClick={handleImageDisplay}
               >
                 Show Images
               </button>
               <button
-                className="text-red-700 uppercase p-1"
+                className="text-white bg-red-500 hover:bg-red-600 uppercase px-4 py-2 rounded-md"
                 onClick={handleVideoDisplay}
               >
                 Show Videos
@@ -133,7 +137,7 @@ const Listings = () => {
               </p>
               {listing.offer && (
                 <p className="text-sm">
-                  ${listing.regularPrice - listing.discountPrice}
+                  ${listing.regularPrice - listing.discountPrice} off
                 </p>
               )}
               {currentUser &&
@@ -217,7 +221,19 @@ const Listings = () => {
           </div>
         </div>
       )}
-      <EditListingRedirect />
+      <div className="flex gap-4 items-center mt-6 static bottom-0">
+        <Link to={`/update-listing-information/${id}`}>
+          <button className="text-blue-700 uppercase p-1 ">
+            Edit Information
+          </button>
+        </Link>
+        <Link to={`/update-listing-images/${id}`}>
+          <button className="text-blue-700 uppercase p-1">Edit Images</button>
+        </Link>
+        <Link to={`/update-listing-videos/${id}`}>
+          <button className="text-blue-700 uppercase p-1  ">Edit Videos</button>
+        </Link>
+      </div>
     </main>
   );
 };

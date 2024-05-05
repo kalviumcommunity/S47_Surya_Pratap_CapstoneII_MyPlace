@@ -104,8 +104,8 @@ const UpdateListing = () => {
         setUploadSuccessMessage("");
         setIsLoading(false);
         console.log(err);
-        console.log(err.response.data.error);
-        setErrorMessages(err.response.data.error);
+        console.log(err.response.data);
+        setErrorMessages(err.response.data);
       });
   };
 
@@ -302,7 +302,7 @@ const UpdateListing = () => {
       </form>
       {uploadSuccessMessage && (
         <div
-          className="bg-green-100 border-red-400 text-green-600 px-4 py-3 rounded-lg relative text-center"
+          className="bg-green-100 border-red-400 text-green-600 px-4 py-3 rounded-lg relative text-center font-semibold mt-3"
           role="success"
         >
           <strong className="font-bold"> {uploadSuccessMessage} </strong>
@@ -310,7 +310,7 @@ const UpdateListing = () => {
       )}
       {errMessage && (
         <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center font-semibold mt-3"
           role="alert"
         >
           {errMessage}

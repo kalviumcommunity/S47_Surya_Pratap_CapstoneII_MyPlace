@@ -54,7 +54,7 @@ const UpdateListingVideos = () => {
           setVideosUpdateSuccessMessage("");
           console.log(err);
           setIsLoading(false);
-          setErrorMessages(err);
+          setErrorMessages(err.response.data);
           setDisablebutton(false);
         });
     } catch (error) {
@@ -111,7 +111,7 @@ const UpdateListingVideos = () => {
       )}
       {errMessage && (
         <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center font-semibold mt-3"
           role="alert"
         >
           {errMessage}
