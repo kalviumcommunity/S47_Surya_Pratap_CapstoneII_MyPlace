@@ -134,6 +134,13 @@ export const updateListingVideos = async (req, res) => {
   const { id } = req.params;
 
   try {
+    const listing = Listing.findById(id);
+    if (!listing) {
+      res.status(404).send("No listing found");
+    }
+    if (req.user.id !== listing.userRef) {
+      res.status(401).send("You can only update your own Videos");
+    }
     let videosPaths = [];
     if (
       req.files &&
@@ -155,6 +162,81 @@ export const updateListingVideos = async (req, res) => {
     console.log("listing updated", updatedListing);
   } catch (error) {
     log(error.message);
+    // res.send(error.message);
+  }
+};
+
+export const getSearchedListings = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 9;
+    const startIndex = parseInt(req.query.startIndex) || 0;
+    let offer = req.query.offer;
+
+    if (offer === undefined || offer === "false") {
+      offer = { $in: [true, false] };
+    }
+
+    let furnished = req.query.furnished;
+
+    if (furnished === undefined || furnished === "false") {
+      furnished = { $in: [true, false] };
+    }
+
+    let parking = req.query.parking;
+
+    if (parking === undefined || parking === "false") {
+      parking = { $in: [true, false] };
+    }
+
+    let type;
+
+    if (type === undefined || type === "all") {
+      type = { $in: ["rent", "sale"] };
+    } else {
+      type = req.query.type;
+    }
+
+    let ACrooms = req.query.ACrooms;
+
+    if (ACrooms === undefined || ACrooms === "false") {
+      ACrooms = { $in: [true, false] };
+    }
+
+    let messFacility = req.query.ACRooms;
+
+    if (messFacility === undefined || messFacility === "false") {
+      messFacility = { $in: [true, false] };
+    }
+
+    let wifiAvailable = req.query.ACRooms;
+
+    if (wifiAvailable === undefined || wifiAvailable === "false") {
+      wifiAvailable = { $in: [true, false] };
+    }
+
+    const searchTerm = req.query.searchTerm || "";
+
+    const sort = req.query.sort || "createdAt";
+
+    const order = req.query.order || "desc";
+
+    const listings = await Listing.find({
+      name: { $regex: searchTerm, $options: "i" },
+      offer,
+      furnished,
+      parking,
+      type,
+      ACrooms,
+      messFacility,
+      wifiAvailable,
+    })
+      .sort({ [sort]: order })
+      .limit(limit)
+      .skip(startIndex);
+
+    return res.status(200).json(listings);
+  } catch (error) {
     res.send(error.message);
+    log(error.message);
   }
 };

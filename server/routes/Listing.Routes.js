@@ -5,7 +5,8 @@ import {
   updateListingInfo,
   getListingById,
   updateListingImages,
-  updateListingVideos
+  updateListingVideos,
+  getSearchedListings,
 } from "../controllers/listing.controllers.js";
 import { verifyToken } from "../utils/verifyUser.js";
 import multer from "multer";
@@ -84,5 +85,7 @@ router.put(
   upload.fields([{ name: "videos", maxCount: 2 }]),
   updateListingVideos
 );
+
+router.get("/getSearchedListings", getSearchedListings);
 
 export default router;

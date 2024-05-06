@@ -13,6 +13,7 @@ import EditListingRedirect from "./components/EditListingRedirect";
 import UpdateListingImages from "./components/UpdateListingImages";
 import UpdateListingVideos from "./components/UpdateListingVideos";
 import Listings from "./components/Listings";
+import SearchResults from "./components/SearchResults";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/sign-in" element={<SignIn />}></Route>
         <Route path="/sign-up" element={<SignUp />}></Route>
         <Route path="/about" element={<About />}></Route>
+        <Route path="/search" element={<SearchResults />}></Route>
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />}></Route>
           <Route path="/create-listing" element={<CreateListing />}></Route>

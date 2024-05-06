@@ -53,8 +53,8 @@ function UpdateListingImages() {
         })
         .catch((err) => {
           setIsLoading(false);
-          console.log(err.message);
-          setErrorMessages(err);
+          console.log(err);
+          setErrorMessages(err.response.data);
           setDisablebutton(false);
         });
     } catch (error) {
@@ -99,7 +99,7 @@ function UpdateListingImages() {
       </form>
       {updateSuccessMessage && (
         <div
-          className="bg-green-100 border-red-400 text-green-600 px-4 py-3 rounded-lg relative text-center"
+          className="bg-green-100 border-red-400 text-green-600 px-4 py-3 rounded-lg relative text-center mt-3 font-semibold"
           role="success"
         >
           <strong className="font-bold"> {updateSuccessMessage} </strong>
@@ -107,7 +107,7 @@ function UpdateListingImages() {
       )}
       {errorMesssages && (
         <div
-          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+          className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center mt-3 font-semibold"
           role="alert"
         >
           {errorMesssages}

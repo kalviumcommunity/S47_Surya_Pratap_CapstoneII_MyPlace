@@ -72,11 +72,10 @@ const CreateListing = () => {
       .then((res) => {
         setIsLoading(false);
         setDisablebutton(true);
-        console.log(res);
         setValidationErrors("");
         setUploadSuccessMessage(res.data.message);
         setTimeout(() => {
-          navigate(`/listing/${currentUser.data.rest._id}`);
+          navigate(`/listing/${res.data.createdListing._id}`);
         }, 1500);
       })
       .catch((err) => {
