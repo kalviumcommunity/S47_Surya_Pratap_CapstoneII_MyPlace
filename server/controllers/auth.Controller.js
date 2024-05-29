@@ -81,4 +81,3 @@ export const google = async (req, res) => {
     console.log(error);
   }
 };
-

@@ -151,6 +151,8 @@ export const updateListingVideos = async (req, res) => {
       for (let video of req.files.videos) {
         videosPaths.push("/" + video.path);
       }
+    } else{
+      res.status(500).send("No videos provided")
     }
 
     const updatedListing = await Listing.findByIdAndUpdate(
