@@ -4,7 +4,7 @@
 
 This website help you to find the best alternative place for you to live which is often to close to the university.
 
-- (Deployed Link)[https://my-hood.netlify.app/]
+- [Deployed Link](https://my-hood.netlify.app/)
 - I have looked through many real estate website but they were not as desciptive and as helpful for a student seeking for a place that is as helpful for a student. 
 - So I built this project where the owners can list out theere places and the users can checkout the listing and opt out to live In happily.
 - Throughout the creation of the project I learned the use of global state management in react, working of API from front end to back end
