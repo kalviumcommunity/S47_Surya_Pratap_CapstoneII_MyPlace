@@ -24,6 +24,4 @@ This website help you to find the best alternative place for you to live which i
 - [REACT](https://react.dev/)
 - [TAILWIND CSS](https://tailwindcss.com/docs/guides/vite)
 
-## Tests
 
-Go the extra mile and write tests for your application. Then provide examples on how to run them here.
