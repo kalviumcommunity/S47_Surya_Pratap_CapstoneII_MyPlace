@@ -68,7 +68,7 @@ const Listings = () => {
       {error && <p className="text-center my-7 text-2xl"> {error} </p>}
       {listing && !loading && !error && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="md:h-96">
+          <div className="md:h-96 ">
             {showImages ? (
               <Swiper navigation>
                 {listing.images.map((url, index) => (
