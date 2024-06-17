@@ -15,7 +15,9 @@ const UpdateListingVideos = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:300/api/listing/getListingById/${id}`)
+      .get(
+        `${import.meta.env.VITE_BACKEND_URI}/api/listing/getListingById/${id}`
+      )
       .then((res) => {
         setFetchedVideos(res.data.videos);
       });
@@ -32,7 +34,9 @@ const UpdateListingVideos = () => {
       }
       axios
         .put(
-          `http://localhost:300/api/listing/updateListing-videos/${id}`,
+          `${
+            import.meta.env.VITE_BACKEND_URI
+          }/api/listing/updateListing-videos/${id}`,
           formData,
           {
             headers: {
@@ -78,7 +82,10 @@ const UpdateListingVideos = () => {
           >
             <video className="w-full h-full rounded-lg shadow-md" controls>
               <source
-                src={`http://localhost:300${item.replace(/\\/g, "/")}`}
+                src={`${import.meta.env.VITE_BACKEND_URI}${item.replace(
+                  /\\/g,
+                  "/"
+                )}`}
                 type="video/mp4"
               />
             </video>

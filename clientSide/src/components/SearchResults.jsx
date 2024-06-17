@@ -104,7 +104,9 @@ const SearchResults = () => {
       setloading(true);
       await axios
         .get(
-          `http://localhost:300/api/listing/getSearchedListings?${searchQuery}`
+          `${
+            import.meta.env.VITE_BACKEND_URI
+          }/api/listing/getSearchedListings?${searchQuery}`
         )
         .then((res) => {
           setloading(false);
@@ -283,13 +285,11 @@ const SearchResults = () => {
               Loading...
             </p>
           )}
-          {
-            !loading && listings.length > 0 && (
-                listings.map((item, index) =>(
-                    <ListingItem listing={item}  key={index}/>
-                ))
-            )
-          }
+          {!loading &&
+            listings.length > 0 &&
+            listings.map((item, index) => (
+              <ListingItem listing={item} key={index} />
+            ))}
         </div>
       </div>
     </div>
