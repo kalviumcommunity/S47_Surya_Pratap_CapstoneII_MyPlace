@@ -11,7 +11,9 @@ const Contact = ({ listing }) => {
       try {
         await axios
           .get(
-            `http://localhost:300/api/user/getLandloard/${listing.userRef}`,
+            `${import.meta.env.VITE_BACKEND_URI}/api/user/getLandloard/${
+              listing.userRef
+            }`,
             {
               headers: {
                 Authorization: `Bearer ${sessionStorage.getItem(
@@ -31,7 +33,6 @@ const Contact = ({ listing }) => {
         console.log(error.message);
       }
     };
-
 
     fetchLandloard();
   }, [listing.userRef]);

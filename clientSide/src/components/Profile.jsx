@@ -77,7 +77,9 @@ const Profile = () => {
       dispatch(updateUserStart());
       axios
         .post(
-          `http://localhost:300/api/user/update/${currentUser.data.rest._id}`,
+          `${import.meta.env.VITE_BACKEND_URI}/api/user/update/${
+            currentUser.data.rest._id
+          }`,
           formData,
           {
             headers: {
@@ -101,7 +103,9 @@ const Profile = () => {
       dispatch(deleteUserStart());
       await axios
         .delete(
-          `http://localhost:300/api/user/delete/${currentUser.data.rest._id}`,
+          `${import.meta.env.VITE_BACKEND_URI}/api/user/delete/${
+            currentUser.data.rest._id
+          }`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
@@ -139,7 +143,9 @@ const Profile = () => {
       setShowCloseButton(true);
       await axios
         .get(
-          `http://localhost:300/api/user/listings/${currentUser.data.rest._id}`,
+          `${import.meta.env.VITE_BACKEND_URI}/api/user/listings/${
+            currentUser.data.rest._id
+          }`,
           {
             headers: {
               Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
@@ -168,11 +174,14 @@ const Profile = () => {
     e.preventDefault();
     try {
       await axios
-        .delete(`http://localhost:300/api/listing/deleteListing/${id}`, {
-          headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
-          },
-        })
+        .delete(
+          `${import.meta.env.VITE_BACKEND_URI}/api/listing/deleteListing/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+            },
+          }
+        )
         .then((res) => {
           console.log(res);
           setShowListings((prev) => {

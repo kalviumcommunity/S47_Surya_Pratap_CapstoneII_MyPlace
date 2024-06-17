@@ -64,7 +64,7 @@ const CreateListing = () => {
     }
     console.log(formData); // For testing
     await axios
-      .post(`http://localhost:300/api/listing/create`, formData, {
+      .post(`${import.meta.env.VITE_BACKEND_URI}/api/listing/create`, formData, {
         headers: {
           Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
         },

@@ -151,8 +151,8 @@ export const updateListingVideos = async (req, res) => {
       for (let video of req.files.videos) {
         videosPaths.push("/" + video.path);
       }
-    } else{
-      res.status(500).send("No videos provided")
+    } else {
+      res.status(500).send("No videos provided");
     }
 
     const updatedListing = await Listing.findByIdAndUpdate(
@@ -190,7 +190,7 @@ export const getSearchedListings = async (req, res) => {
       parking = { $in: [true, false] };
     }
 
-    let type;
+    let type = req.query.type;
 
     if (type === undefined || type === "all") {
       type = { $in: ["rent", "sale"] };

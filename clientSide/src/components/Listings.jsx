@@ -37,7 +37,9 @@ const Listings = () => {
     try {
       setLoading(true);
       axios
-        .get(`http://localhost:300/api/listing/getListingById/${id}`)
+        .get(
+          `${import.meta.env.VITE_BACKEND_URI}/api/listing/getListingById/${id}`
+        )
         .then((res) => {
           setListing(res.data);
           setLoading(false);
@@ -79,7 +81,7 @@ const Listings = () => {
                         "https://th.bing.com/th/id/R.220c3d532bfbbb479f817e41e0d11e4e?rik=FImtOPw4JZfjTQ&riu=http%3a%2f%2fhudsonheightsres.com%2fwp-content%2fuploads%2fsites%2f5%2f2020%2f02%2f20150730-174343-20150730-174359-scaled.jpg&ehk=RR01ft7Qr5XExuMaieCZ9HdFqn5QQmKrVEAZAZJJbn4%3d&risl=&pid=ImgRaw&r=0"
                       }
                       alt=""
-                      className="object-cover object-center max-w-full h-auto md:max-h-96 rounded-lg shadow-md"
+                      className="object-cover object-center max-w-full h-auto md:max-h-96 rounded-lg shadow-md px-12"
                     />
                   </SwiperSlide>
                 ))}

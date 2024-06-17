@@ -31,7 +31,7 @@ const UpdateListing = () => {
   useEffect(() => {
     console.log("current listing id", id);
     axios
-      .get(`http://localhost:300/api/listing/getListingById/${id}`)
+      .get(`${import.meta.env.VITE_BACKEND_URI}/api/listing/getListingById/${id}`)
       .then((res) => {
         const { data } = res;
         setName(data.name);
@@ -67,7 +67,7 @@ const UpdateListing = () => {
 
     await axios
       .put(
-        `http://localhost:300/api/listing/updateListing-info/${id}`,
+        `${import.meta.env.VITE_BACKEND_URI}/api/listing/updateListing-info/${id}`,
         {
           name,
           address,

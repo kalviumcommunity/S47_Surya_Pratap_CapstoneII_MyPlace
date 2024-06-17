@@ -14,7 +14,7 @@ function UpdateListingImages() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:300/api/listing/getListingById/${id}`)
+      .get(`${import.meta.env.VITE_BACKEND_URI}/api/listing/getListingById/${id}`)
       .then((res) => {
         setFetchedImages(res.data.images);
       });
@@ -33,7 +33,7 @@ function UpdateListingImages() {
       }
       axios
         .put(
-          `http://localhost:300/api/listing/updateListing-images/${id}`,
+          `${import.meta.env.VITE_BACKEND_URI}/api/listing/updateListing-images/${id}`,
           formData,
           {
             headers: {
