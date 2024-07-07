@@ -96,7 +96,7 @@ const Listings = () => {
                       key={index}
                     >
                       <source
-                        src={`http://localhost:300${videoURL.replace(
+                        src={`${import.meta.env.VITE_BACKEND_URI}${videoURL.replace(
                           /\\/g,
                           "/"
                         )}`}
