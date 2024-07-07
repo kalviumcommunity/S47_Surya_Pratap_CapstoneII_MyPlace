@@ -136,10 +136,10 @@ export const updateListingVideos = async (req, res) => {
   try {
     const listing = Listing.findById(id);
     if (!listing) {
-      res.status(404).send("No listing found");
+      return res.status(404).send("No listing found");
     }
     if (req.user.id !== listing.userRef) {
-      res.status(401).send("You can only update your own Videos");
+      return res.status(401).send("You can only update your own Videos");
     }
     let videosPaths = [];
     if (
@@ -163,8 +163,7 @@ export const updateListingVideos = async (req, res) => {
     res.status(200).json(updatedListing);
     console.log("listing updated", updatedListing);
   } catch (error) {
-    log(error.message);
-    // res.send(error.message);
+    res.send(error.message);
   }
 };
 
