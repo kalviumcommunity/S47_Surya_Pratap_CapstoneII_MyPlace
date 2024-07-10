@@ -185,9 +185,6 @@ const Listings = () => {
         <Link to={`/update-listing-images/${id}`}>
           <button className="text-blue-700 uppercase p-1">Edit Images</button>
         </Link>
-        <Link to={`/update-listing-videos/${id}`}>
-          <button className="text-blue-700 uppercase p-1  ">Edit Videos</button>
-        </Link>
       </div>
     </main>
   );
