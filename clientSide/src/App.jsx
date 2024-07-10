@@ -11,7 +11,6 @@ import CreateListing from "./components/CreateListing";
 import UpdateListing from "./components/UpdateListing";
 import EditListingRedirect from "./components/EditListingRedirect";
 import UpdateListingImages from "./components/UpdateListingImages";
-import UpdateListingVideos from "./components/UpdateListingVideos";
 import Listings from "./components/Listings";
 import SearchResults from "./components/SearchResults";
 
@@ -39,10 +38,6 @@ function App() {
           <Route
             path="/update-listing-images/:id"
             element={<UpdateListingImages />}
-          ></Route>
-          <Route
-            path="/update-listing-videos/:id"
-            element={<UpdateListingVideos />}
           ></Route>
         </Route>
         <Route path="/oauth" element={<OAuth />}></Route>
