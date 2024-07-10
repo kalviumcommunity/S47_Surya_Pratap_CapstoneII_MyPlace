@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const CreateListing = () => {
   const [imagefiles, setImagefiles] = useState([]);
-  const [videos, setVideos] = useState([]);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
@@ -56,19 +55,16 @@ const CreateListing = () => {
       }
       formData.append("images", imagefiles[i]);
     }
-    for (let i = 0; i < videos.length; i++) {
-      if (videos.length > 2) {
-        alert("You can only upload 2 videos");
-      }
-      formData.append("videos", videos[i]);
-    }
-    console.log(formData); // For testing
     await axios
-      .post(`${import.meta.env.VITE_BACKEND_URI}/api/listing/create`, formData, {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
-        },
-      })
+      .post(
+        `${import.meta.env.VITE_BACKEND_URI}/api/listing/create`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("access_token")}`,
+          },
+        }
+      )
       .then((res) => {
         setIsLoading(false);
         setDisablebutton(true);
@@ -80,8 +76,6 @@ const CreateListing = () => {
       })
       .catch((err) => {
         setIsLoading(false);
-        console.log(err);
-        console.log(err.response.data.error);
         if (err.response.data.error) {
           setValidationErrors(
             err.response.data.error.map((err) => err.message)
@@ -281,22 +275,6 @@ const CreateListing = () => {
               multiple
               className="p-3 border border-gray-300 rounded w-full"
               onChange={(e) => setImagefiles(e.target.files)}
-            />
-          </div>
-          <p className="font-semibold">
-            Videos
-            <span className="font-normal text-gray-600 ml-2">
-              Videos will be used as a highlight (max 2)
-            </span>
-          </p>
-          <div className="flex gap-4">
-            <input
-              type="file"
-              id="videos"
-              accept=".mp4, .mkv"
-              multiple
-              className="p-3 border border-gray-300 rounded w-full"
-              onChange={(e) => setVideos(e.target.files)}
             />
           </div>
           <button
