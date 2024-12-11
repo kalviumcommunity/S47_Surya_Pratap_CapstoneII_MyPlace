@@ -176,22 +176,19 @@ const Listings = () => {
           </div>
         </div>
       )}
-      {currentUser &&
-        listing.userRef ==
-          currentUser.data.rest._id(
-            <div className="flex gap-4 items-center mt-6 static bottom-0">
-              <Link to={`/update-listing-information/${id}`}>
-                <button className="text-blue-700 uppercase p-1 ">
-                  Edit Information
-                </button>
-              </Link>
-              <Link to={`/update-listing-images/${id}`}>
-                <button className="text-blue-700 uppercase p-1">
-                  Edit Images
-                </button>
-              </Link>
-            </div>
-          )}
+
+      {currentUser && listing.userRef === currentUser.data.rest._id && (
+        <div className="flex gap-4 items-center mt-6 static bottom-0">
+          <Link to={`/update-listing-information/${id}`}>
+            <button className="text-blue-700 uppercase p-1">
+              Edit Information
+            </button>
+          </Link>
+          <Link to={`/update-listing-images/${id}`}>
+            <button className="text-blue-700 uppercase p-1">Edit Images</button>
+          </Link>
+        </div>
+      )}
     </main>
   );
 };
